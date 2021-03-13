@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vending machine</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body>
+  <div class="bg-info">
+    <div class="d-flex left-info">
+    <div class="showcase bg-light m-4">
+        <div id="target"></div>
+        <div class="d-none" id="items">
+            <!-- <div class="item bg-danger">1</div>
+            <div class="item bg-danger">2
+                <img src="https://dsimg.wowjpn.goo.ne.jp/rs/?src=https://wow-j.com/images/ext/allguides/02027/02027_008.jpg&maxw=770&maxh=0&resize=1">
+            </div>
+            <div class="item bg-danger">3</div>
+            <div class="item bg-danger">4</div>
+            <div class="item bg-danger">5</div>
+            <div class="item bg-danger">6</div>
+            <div class="item bg-danger">7</div>
+            <div class="item bg-danger">8</div>
+            <div class="item bg-danger">9</div> -->
+        </div>
+    </div>
+    <div class="right-info my-4 mr-5">
+        <div class="right-item bg-light mb-3 p-2 d-flex" id="drink-info">
+            <!-- <div class="bg-danger display-num">7</div>
+            <div class="display-info pl-3 py-2">
+                <p>CHIPS</p>
+                <p>$4.00</p>
+            </div> -->
+        </div>
+        <div class="right-item bg-light">
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-primary m-2" id="btn1">1</button>
+                <button class="btn btn-primary m-2" id="btn2">2</button>
+                <button class="btn btn-primary m-2" id="btn3">3</button>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-primary m-2" id="btn4">4</button>
+                <button class="btn btn-primary m-2" id="btn5">5</button>
+                <button class="btn btn-primary m-2" id="btn6">6</button>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-primary m-2" id="btn7">7</button>
+                <button class="btn btn-primary m-2" id="btn8">8</button>
+                <button class="btn btn-primary m-2" id="btn9">9</button>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="btn-wrap pb-5">
+        <button class="btn-lg btn-light mx-5 lg" onclick="buy()">PUSH</button>
+    </div>
+</div>
+<script type="text/javascript" src="main.js"></script>
+</body>
+</html>
