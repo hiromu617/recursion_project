@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!--bootstrap-->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<link rel="stylesheet" href="style.css">
+<!-- ここからHTMLを記述してください。 -->
+<div class="pb-5">
+    <div class="bg-primary text-white p-3 text-center">
+        Battery Finder Program 
+    </div>
+    <div class="form-group p-2 pt-4">
+        <label for="brand">
+            Step1: Select your brand</label>
+        <select class="form-control" id="brand">
+            <option >-</option>
+            <option value="Go MN">Go MN</option>
+            <option value="VANY">VANY</option>
+            <option value="Cakon">Cakon</option>
+        </select>
+    </div>
+    <div class="form-group p-2">
+        <label for="model">
+            Step2: Select your model</label>
+        <select class="form-control" id="model">
+            <!-- <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option> -->
+        </select>
+    </div>
+    <div class="form-group p-2">
+        <label for="accessoryPower">
+            Step3: Input Accessory Power Comsumption
+        </label>
+        <div class="d-flex">
+           <input class="form-control col-2" id="accessoryPower" type="number" min="0" max="100"value="0"><p style="line-height: 2;"> W</p> 
+        </div>
+    </div>
+    <div class="p-2">
+        <label>Step4: Chose your battry</label>
+        <div id="batteryTarget"></div>
+        <!-- <div class="card d-flex flex-nowrap py-2">
+            <div class="col-5 align-middle">IKE=43t</div>
+            <div class="col-5 text-nowrap align-middle" style="font-size: 0.75rem">Estimated 29 hours on selected setup</div>
+        </div>
+        <div class="card d-flex flex-nowrap py-2">
+            <div class="col-5">IKE=43t</div>
+            <div class="col-5 text-nowrap" style="font-size: 0.75rem">Estimated 29 hours on selected setup</div>
+        </div>
+        <div class="card d-flex flex-nowrap py-2">
+            <div class="col-5">IKE=43t</div>
+            <div class="col-5 text-nowrap" style="font-size: 0.75rem">Estimated 29 hours on selected setup</div>
+        </div> -->
+    </div>
+</div>
+<script src="main.js"></script>
+</body>
+</html>

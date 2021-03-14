@@ -1,0 +1,4 @@
+/* ここからCSSを記述してください。 */
+.card{
+  flex-direction: row!important;
+}
