@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="top" class="bg-dark">
+    <div class="bg-mask">
+      <h1 class="text-dark font-weight-bold text-center h1 pt-5">Clicker Empire Game</h1>
+      <div class="text-dark font-weight-bold w-75 m-auto pt-5" style="line-height: 2;">
+        <p class="desc">
+        ゲームの目的は、一攫千金を目指し、街に帝国を築くことになります。
+        ユーザーは 20 歳で、ファーストフード店でハンバーガーを焼く仕事からスタートします。ユーザーはお金を貯めることによって、アップグレード、投資、あるいは、不動産の購入をすることができます。最初の時点でユーザーは 5 万円を持っていて、ハンバーガーをクリックすると 25 円獲得できます。ユーザーは、ゲーム内で以下のアイテムを購入することができます。
+        </p>
+      </div>
+      <div class="d-flex flex-wrap m-auto w-75 justify-content-around pt-5">
+        <input id="userName" type="text" class="form-control form-control col-9 mb-5" placeholder="ユーザー名">
+        <button class="btn btn-info col-4" id="fromTheBeggining">最初から</button>
+        <button class="btn btn-secondary col-4" onclick="login()">続きから</button>
+      </div>
+      </div>
+  </div>
+  <div id="main" class="bg-secondary p-lg-5 py-2 d-none">
+    <!-- <div class="container d-flex h-100 w-100 flex-wrap">
+      <div class="left-wrap d-flex flex-column  bg-dark col-lg-5 row-12 p-3 col-md-12 ">
+        <div class="bg-secondary w-100 h-auto m-auto text-center text-white ">
+          <p class="pt-3 h5 font-weight-bold">1102 Bergers</p>
+          <p class="pt-1 pb-2">$25 per second</p>
+        </div>
+        <div class="w-50 m-auto img-wrap flex-grow-1 d-flex align-items-center">
+          <img src="./images/burger-307648_960_720.webp" alt="" class="w-100 m-auto py-5">
+        </div>
+      </div>
+      <div class="right-wrap col-lg-7 col-md-12 p-3 d-flex flex-column">
+        <div class="bg-dark h-auto mb-3 w-100 p-2 pb-3 text-white text-center">
+          <div class="d-flex w-100 h-50 mb-2">
+            <div class="bg-secondary w-50 h-100 mr-2">Steven</div>
+            <div class="bg-secondary w-50 h-100">25 yrs old</div>
+          </div>
+          <div class="d-flex w-100 h-50">
+            <div class="bg-secondary w-50 h-100 mr-2">1882 days</div>
+            <div class="bg-secondary w-50 h-100">$1981741</div>
+          </div>
+        </div>
+        <div class="bg-dark  p-2 flex-grow-1" style="overflow: scroll;"> -->
+          <!-- <div class="bg-secondary w-100 mb-2 p-2 d-flex text-white" style="height: 100px;">
+            <img src="./images/chart-1296049_960_720.png" alt="" style="height: 100%; width: auto;">
+            <div class="flex-grow-1 pl-3 h5">
+              <h3>House</h3>
+              <div class="d-flex justify-content-between">
+                <div>$20000</div>
+                <div class="text-success">+$1313</div>
+              </div>
+            </div>
+            <div class="w-25 text-center h3" style="line-height: 80px;">
+              2
+            </div>
+          </div> -->
+          <!-- <div class="bg-secondary w-100 h-auto text-white p-3">
+            <div class="d-flex mb-5">
+              <div class="col-7">
+                <h2 class="h1 mb-3" id="productName">House</h2>
+                <p class="h5 mb-2">Max Purchases: <span id="maxPurchases">500</span></p>
+                <p class="h5 mb-2">price: $<span id="productPrice">12000</span></p>
+                <p class="h6 mb-2">Get <span id="productValue">3200</span> extra yen per sec</p>
+              </div>
+              <div class="col-5">
+                <img src="./images/burger.webp" alt="" class="w-100">
+              </div>
+            </div>
+            <form class="mb-5">
+              <div class="form-group">
+                <label for="purchaseNum">How Many would you like purchase?</label>
+                <input type="number" min="0" class="form-control" id="purchaseNum" placeholder="how many?">
+              </div>
+              <p class="text-right">Total: $<span id="totalPrice">100000</span></p>
+            </form>
+            <div class="d-flex mb-3">
+              <button class="btn btn-outline-primary col-6 mr-2" style="background-color: white;">Go Back</button>
+              <button class="btn btn-primary col-6">Purchase</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+<script src="main.js"></script>
+</body>
+</html>

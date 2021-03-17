@@ -1,0 +1,39 @@
+#top{
+  height: 100vh;
+  background-image: url(https://this-is-illustration.net/_src/5756/illustrator-city-map-comical-illust.webp?v=1613782267866);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+div{
+  box-sizing: border-box!important;
+}
+p{
+  margin: 0;
+}
+.bg-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  background: rgba(255,255,255,0.3);
+}
+#main{
+  height: 100vh;
+  width: 100%!important;
+}
+
+@media(max-width: 800px){
+  #main{
+    height: auto;
+    padding: 0;
+  }
+  .right-wrap{
+    height: 80vh;
+  }
+  .desc{
+    line-height: 1.2;
+  }
+ 
+}
