@@ -32,5 +32,8 @@ p{
   .right-wrap{
     height: 80vh;
   }
+  .desc{
+    line-height: 1.2;
+  }
  
 }

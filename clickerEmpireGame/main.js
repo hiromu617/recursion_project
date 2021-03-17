@@ -1,5 +1,6 @@
 const config = {
-  currentUser: ''
+  currentUser: '',
+  intervalId: ''
 }
 class User{
   constructor(name, age, days, money, purchasedProducts, clickNum, incrementPerSec, incrementOfInvest){
@@ -7,10 +8,10 @@ class User{
     this.age = age
     this.days = days
     this.money = money
-    this.purchasedProducts = {"Flip machine": 1}
-    this.clickNum = 0
-    this.incrementPerSec = 0
-    this.incrementOfInvest = 0
+    this.purchasedProducts = purchasedProducts
+    this.clickNum = clickNum
+    this.incrementPerSec = incrementPerSec
+    this.incrementOfInvest = incrementOfInvest
   }
   clickBurger(){
     let num = this.purchasedProducts["Flip machine"]
@@ -32,11 +33,12 @@ class User{
   updateIncrementOfInvest(){
     this.incrementOfInvest = 0
     if(this.purchasedProducts["ETF Stock"]){
-      this.incrementOfInvest += products["ETF Stock"].price * products["ETF Stock"].value * this.purchasedProducts["ETF Stock"]
+      this.incrementOfInvest += Math.floor(products["ETF Stock"].price * products["ETF Stock"].value * this.purchasedProducts["ETF Stock"])
     }
     if(this.purchasedProducts["ETF Bonds"]){
-      this.incrementOfInvest += products["ETF Bonds"].price * products["ETF Bonds"].value * this.purchasedProducts["ETF Stock"]
+      this.incrementOfInvest += Math.floor(products["ETF Bonds"].price * products["ETF Bonds"].value * this.purchasedProducts["ETF Bonds"])
     }
+    // console.log(this.incrementOfInvest)
     return 
   }
 }
@@ -67,11 +69,11 @@ class Product{
 
     user.money -= total
     if(user.purchasedProducts[this.name] == undefined){
-      user.purchasedProducts[this.name] = num
+      user.purchasedProducts[this.name] = Number(num)
     }else{
       user.purchasedProducts[this.name] += Number(num)
     }
-    console.log(user)
+    // console.log(user)
     if(this.type == "property"){
       user.incrementPerSec += this.value * num
     }
@@ -87,7 +89,7 @@ class Product{
     renderMainView(user)
     renderProduct(products)
 
-    console.log(user)
+    // console.log(user)
   }
 }
 
@@ -115,6 +117,7 @@ function displayBlock(ele){
   ele.classList.add("d-block");
 }
 
+// 最初から始める時の処理
 function startGame(){
   let name = document.getElementById('userName').value
   if(!name){
@@ -124,18 +127,20 @@ function startGame(){
     alert('ユーザー名は10文字以内で入力してください')
     return
   }
+  // constructor(name, age, days, money, purchasedProducts, clickNum, incrementPerSec, incrementOfInvest){
+
   if(name == "okanemochi"){
-    user = new User(name, 20, 1, 100000000)
+    user = new User(name, 20, 1, 100000000, {"Flip machine": 1}, 0,0,0)
   }else{
-    user = new User(name, 20, 1, 50000)
+    user = new User(name, 20, 1, 50000, {"Flip machine": 1}, 0,0,0)
   }
   config.currentUser = user
-  console.log(user)
+  // console.log(user)
 
   displayNone(document.getElementById('top'))
 
   renderMainView(user)
-  renderProduct(products, user)
+  renderProduct()
   timeGoesby(user)
 }
 
@@ -144,19 +149,26 @@ document.getElementById('fromTheBeggining')
   startGame()
 })
 
+// daysをカウントするためのメソッド
 function timeGoesby(user){
-  setInterval(function(){
+  // console.log(user)
+  let id = setInterval(function(){
     if(!config.currentUser) return 
 
     user.days += 1
     if(user.days % 365 == 0) user.getOld()
     renderDays(user.days)
+
+    // makemoney()で毎秒お金を増やす
     user.makeMoney()
   },1000)
+  // カウントを止めるためにidを保存
+  config.intervalId = id
 }
 
+// 初期化の処理
 function initializeGame(){
-  if(confirm("ゲームをリセットします。本当によろしいですか？")){
+  if(window.confirm("ゲームをリセットします。本当によろしいですか？")){
     config.currentUser.days = 0
     config.currentUser.age = 20
     config.currentUser.money = 50000
@@ -170,6 +182,45 @@ function initializeGame(){
   return
 }
 
+// セーブの処理
+function saveData(){
+  alert('データをセーブしました')
+
+  // ユーザーオブジェクトをJSONにしてlocalstorageに保存
+  let data = JSON.stringify(config.currentUser)
+  localStorage.setItem("user", data);
+  console.log(data)
+
+  config.currentUser = ''
+  config.intervalId = ''
+
+  // カウントを止める
+  window.clearInterval(config.intervalId)
+
+  // トップ画面に戻る
+  displayBlock(document.getElementById('top'))
+  displayNone(document.getElementById('main'))
+}
+
+// ログイン処理
+function login(){
+  // localstorageからuserオブジェクトを取り出す
+  let data = JSON.parse(localStorage.getItem('user'))
+  let user = new User(data.name, data.age, data.days, data.money, data.purchasedProducts, data.clickNum, data.incrementPerSec, data.incrementOfInvest)
+  config.currentUser = user
+
+  if(!config.currentUser) alert('データがありません')
+  // console.log(config)
+  console.log(user)
+
+  displayNone(document.getElementById('top'))
+
+  renderMainView(user)
+  renderProduct()
+  timeGoesby(user)
+}
+
+// 以下レンダリングのためのメソッド
 function renderMainView(user){
   let container = document.getElementById('main')
   container.innerHTML = 
@@ -199,7 +250,7 @@ function renderMainView(user){
         </div>
         <div class="d-flex justify-content-end pt-2">
           <button class="btn btn-outline-dark mr-3 btn-lg fa fa-2x fa-repeat" onclick="initializeGame()"></button>
-          <button class="btn btn-outline-dark btn-lg fa fa-2x fa-save"></button>
+          <button class="btn btn-outline-dark btn-lg fa fa-2x fa-save" onclick="saveData()"></button>
         </div>
         </div>
       </div>
@@ -238,8 +289,8 @@ function renderProduct(){
   target.innerHTML = ""
   let html = ''
   for(let i in products){
-    console.log(products[i])
-    let num = config.currentUser.purchasedProducts[i] == undefined ? 0 : user.purchasedProducts[i]
+    // console.log(products[i])
+    let num = config.currentUser.purchasedProducts[i] == undefined ? 0 : config.currentUser.purchasedProducts[i]
     html +=
     `
     <div id="productCard" class="bg-secondary w-100 mb-2 p-2 d-flex text-white" style="height: auto;" data-name="${products[i].name}" onclick='renderDetail("${products[i].name}")'>
@@ -281,7 +332,7 @@ function renderProduct(){
 
 function renderDetail(productName){
   product = products[productName]
-  console.log(product)
+  // console.log(product)
   let target = document.getElementById('products')
   target.innerHTML = ''
   let html =
