@@ -2,16 +2,18 @@ const config = {
   currentUser: ''
 }
 class User{
-  constructor(name, age, days, money, purchases, clickNum){
+  constructor(name, age, days, money, purchasedProducts, clickNum, incrementPerSec, incrementOfInvest){
     this.name = name
     this.age = age
     this.days = days
     this.money = money
-    this.purchases = {"Flip machine": 1}
+    this.purchasedProducts = {"Flip machine": 1}
     this.clickNum = 0
+    this.incrementPerSec = 0
+    this.incrementOfInvest = 0
   }
   clickBurger(){
-    let num = this.purchases["Flip machine"]
+    let num = this.purchasedProducts["Flip machine"]
     this.money += 25 * num
     this.clickNum += 1
     renderClickNum(this.clickNum)
@@ -19,28 +21,88 @@ class User{
   }
   
   getOld(){
-
+    this.age += 1
+    renderAge(this.age)
   }
   makeMoney(){
-
+    this.money += this.incrementPerSec
+    this.money += this.incrementOfInvest
+    renderMoney(this.money)
+  }
+  updateIncrementOfInvest(){
+    this.incrementOfInvest = 0
+    if(this.purchasedProducts["ETF Stock"]){
+      this.incrementOfInvest += products["ETF Stock"].price * products["ETF Stock"].value * this.purchasedProducts["ETF Stock"]
+    }
+    if(this.purchasedProducts["ETF Bonds"]){
+      this.incrementOfInvest += products["ETF Bonds"].price * products["ETF Bonds"].value * this.purchasedProducts["ETF Stock"]
+    }
+    return 
   }
 }
 
 class Product{
-  constructor(name, maximumNumberOfPerchases, price, type, value){
+  constructor(name, maxPurchases, price, type, value, imageUrl){
     this.name = name
-    this.maximumNumberOfPerchases = maximumNumberOfPerchases
+    this.maxPurchases = maxPurchases
     this.price = price
     this.type = type
     this.value = value
+    this.imageUrl = imageUrl
   }
 
-  purchases(){
+  purchase(num){
+    let user = config.currentUser
+    let total = this.price * num
+    if(num <= 0 || num == null){
+      alert('個数を入力してください')
+      return
+    }else if(total > user.money){
+      alert('お金がたりません！！')
+      return
+    }else if(num + user.purchasedProducts[this.name] > this.maxPurchases){
+      alert('最大購入数を超えています！！')
+      return
+    }
 
+    user.money -= total
+    if(user.purchasedProducts[this.name] == undefined){
+      user.purchasedProducts[this.name] = num
+    }else{
+      user.purchasedProducts[this.name] += Number(num)
+    }
+    console.log(user)
+    if(this.type == "property"){
+      user.incrementPerSec += this.value * num
+    }
+    if(this.type == "invest"){
+      user.updateIncrementOfInvest()
+      if(this.name == "ETF Stock"){
+        for(let i = 1; i <= num; i++){
+          this.price = Math.floor(this.price * 1.1)
+        }
+      }
+    }
+
+    renderMainView(user)
+    renderProduct(products)
+
+    console.log(user)
   }
-  increment(){
-    
-  }
+}
+
+const products = {
+  "Flip machine": new Product("Flip machine", 500, 15000, "ability", 25, "./images/burger.webp"),
+  "ETF Stock": new Product("ETF Stock", Infinity, 300000, "invest", 0.001, './images/etf-stock.png'),
+  "ETF Bonds": new Product("ETF Bonds", Infinity, 300000, "invest", 0.007, './images/etf-stock.png'),
+  "Lemonade Stand": new Product("Lemonade Stand", 1000, 30000, "property", 30, './images/lemonade.webp'),
+  "Ice Cream Truck": new Product("Ice Cream Truck", 500, 100000, "property", 120, './images/ice-cream.webp'),
+  "House": new Product("House", 100, 20000000, "property", 32000, './images/home.webp'),
+  "TownHouse": new Product("TownHouse", 100, 40000000, "property", 64000, './images/modern-house.webp'),
+  "Mansion": new Product("Mansion", 20, 250000000, "property", 50000, './images/mansion.webp'),
+  "Industrial Space": new Product("Industrial Space", 10, 1000000000, "property", 2200000, './images/industrial-space.png'),
+  "Hotel Skyscraper": new Product("Hotel Skyscraper", 5, 10000000000, "property", 2500000, './images/skyscrapers.webp'),
+  "Bullet-Speed Sky Railway": new Product("Bullet-Speed Sky Railway", 1, 10000000000000, "property", 30000000000, './images/train.webp'),
 }
 
 function displayNone(ele){
@@ -62,60 +124,19 @@ function startGame(){
     alert('ユーザー名は10文字以内で入力してください')
     return
   }
-  user = new User(name, 20, 1, 50000)
+  if(name == "okanemochi"){
+    user = new User(name, 20, 1, 100000000)
+  }else{
+    user = new User(name, 20, 1, 50000)
+  }
   config.currentUser = user
   console.log(user)
 
   displayNone(document.getElementById('top'))
-  let container = document.getElementById('main')
-  container.innerHTML = 
-  `
-  <div class="container d-flex h-100 w-100 flex-wrap">
-      <div class="left-wrap d-flex flex-column  bg-dark col-lg-5 row-12 p-3 col-md-12 ">
-        <div class="bg-secondary w-100 h-auto m-auto text-center text-white ">
-          <p class="pt-3 h5 font-weight-bold"><span id="clickNum">1</span> Bergers</p>
-          <p class="pt-1 pb-2">$25 per second</p>
-        </div>
-        <div class="w-50 m-auto img-wrap flex-grow-1 d-flex align-items-center">
-          <img src="./images/burger-307648_960_720.webp" alt="" id="burger" class="w-100 m-auto py-5">
-        </div>
-      </div>
-      <div class="right-wrap col-lg-7 col-md-12 p-3 d-flex flex-column">
-        <div class="bg-dark h-auto mb-3 w-100 p-2 pb-3 text-white text-center">
-          <div class="d-flex w-100 h-50 mb-2">
-            <div class="bg-secondary w-50 h-100 mr-2">${user.name}</div>
-            <div class="bg-secondary w-50 h-100">${user.age} yrs old</div>
-          </div>
-          <div class="d-flex w-100 h-50">
-            <div class="bg-secondary w-50 h-100 mr-2"><span id="days">${user.days}</span>days</div>
-            <div class="bg-secondary w-50 h-100" id="money">$${user.money}</div>
-          </div>
-        </div>
-        <div class="bg-dark  p-2 flex-grow-1" style="overflow: scroll;">
-          <div class="bg-secondary w-100 mb-2 p-2 d-flex text-white" style="height: 100px;">
-            <img src="./images/chart-1296049_960_720.png" alt="" style="height: 100%; width: auto;">
-            <div class="flex-grow-1 pl-3 h5">
-              <h3>House</h3>
-              <div class="d-flex justify-content-between">
-                <div>$20000</div>
-                <div class="text-success">+$1313</div>
-              </div>
-            </div>
-            <div class="w-25 text-center h3" style="line-height: 80px;">
-              2
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `
-  displayBlock(document.getElementById('main'))
-  timeGoesby(user)
 
-  let burger = document.getElementById('burger')
-  burger.addEventListener('click', function(){
-    user.clickBurger()
-  })
+  renderMainView(user)
+  renderProduct(products, user)
+  timeGoesby(user)
 }
 
 document.getElementById('fromTheBeggining')
@@ -124,12 +145,77 @@ document.getElementById('fromTheBeggining')
 })
 
 function timeGoesby(user){
-  let daysDiv = document.querySelectorAll('#days')[0]
   setInterval(function(){
     if(!config.currentUser) return 
+
     user.days += 1
-    daysDiv.innerHTML = String(user.days)
+    if(user.days % 365 == 0) user.getOld()
+    renderDays(user.days)
+    user.makeMoney()
   },1000)
+}
+
+function initializeGame(){
+  if(confirm("ゲームをリセットします。本当によろしいですか？")){
+    config.currentUser.days = 0
+    config.currentUser.age = 20
+    config.currentUser.money = 50000
+    config.currentUser.purchasedProducts = {"Flip machine": 1}
+    config.currentUser.clickNum = 0
+    config.currentUser.incrementPerSec = 0
+    config.currentUser.incrementOfInvest = 0
+    renderMainView(config.currentUser)
+    renderProduct()
+  }
+  return
+}
+
+function renderMainView(user){
+  let container = document.getElementById('main')
+  container.innerHTML = 
+  `
+  <div class="container d-flex h-100 w-100 flex-wrap">
+      <div class="left-wrap d-flex flex-column  bg-dark col-lg-5 row-12 p-3 col-md-12 ">
+        <div class="bg-secondary w-100 h-auto m-auto text-center text-white ">
+          <p class="pt-3 h5 font-weight-bold"><span id="clickNum">${user.clickNum}</span> Bergers</p>
+          <p class="pt-1 pb-2">¥<span id="incrementPerSec">${user.incrementPerSec + user.incrementOfInvest}</span> per second</p>
+        </div>
+        <div class="w-50 m-auto img-wrap flex-grow-1 d-flex align-items-center">
+          <img src="./images/burger.webp" alt="" id="burger" class="w-100 m-auto py-5">
+        </div>
+      </div>
+      <div class="right-wrap col-lg-7 col-md-12 p-3 d-flex flex-column">
+        <div class="bg-dark h-auto mb-3 w-100 p-2 pb-3 text-white text-center">
+          <div class="d-flex w-100 h-50 mb-2">
+            <div class="bg-secondary w-50 h-100 mr-2">${user.name}</div>
+            <div class="bg-secondary w-50 h-100"><span id="age">${user.age}</span> yrs old</div>
+          </div>
+          <div class="d-flex w-100 h-50">
+            <div class="bg-secondary w-50 h-100 mr-2"><span id="days">${user.days}</span>days</div>
+            <div class="bg-secondary w-50 h-100">¥<span id="money">${user.money}</span></div>
+          </div>
+        </div>
+        <div id="products" class="bg-dark  p-2 flex-grow-1" style="overflow-y: scroll; height: 40px">
+        </div>
+        <div class="d-flex justify-content-end pt-2">
+          <button class="btn btn-outline-dark mr-3 btn-lg fa fa-2x fa-repeat" onclick="initializeGame()"></button>
+          <button class="btn btn-outline-dark btn-lg fa fa-2x fa-save"></button>
+        </div>
+        </div>
+      </div>
+    </div>
+  `
+  displayBlock(document.getElementById('main'))
+
+  let burger = document.getElementById('burger')
+  burger.addEventListener('click', function(){
+    user.clickBurger()
+  })
+}
+
+function renderDays(days){
+  let moneyDiv = document.querySelectorAll('#days')[0]
+  moneyDiv.innerHTML = String(days)
 }
 
 function renderMoney(money){
@@ -142,4 +228,117 @@ function renderClickNum(num){
   clickNumDiv.innerHTML = String(num)
 }
 
+function renderAge(age){
+  let ageSpan = document.querySelectorAll('#age')[0]
+  ageSpan.innerHTML = String(age)
+}
 
+function renderProduct(){
+  let target = document.getElementById('products')
+  target.innerHTML = ""
+  let html = ''
+  for(let i in products){
+    console.log(products[i])
+    let num = config.currentUser.purchasedProducts[i] == undefined ? 0 : user.purchasedProducts[i]
+    html +=
+    `
+    <div id="productCard" class="bg-secondary w-100 mb-2 p-2 d-flex text-white" style="height: auto;" data-name="${products[i].name}" onclick='renderDetail("${products[i].name}")'>
+      <img src=${products[i].imageUrl} alt="" style="max-height: 100px; width: auto;">
+      <div class="flex-grow-1 pl-3 h5">
+        <h3>${products[i].name}</h3>
+        <div class="d-flex justify-content-between flex-wrap">
+          <div>¥${products[i].price}</div>
+    `
+    if(products[i].type == "ability"){
+      html +=
+      `
+      <div class="text-success" id="productValue">+¥${products[i].value} / click</div>
+      `
+    }else if(products[i].type == "invest"){
+      html +=
+      `
+      <div class="text-success" id="productValue">+${(products[i].value * 100).toPrecision(1)}%/ sec</div>
+      `
+    }else{
+      html +=
+      `
+      <div class="text-success" id="productValue">+¥${products[i].value} / sec</div>
+      `
+    }
+    html +=
+    `
+        </div>
+      </div>
+      <div class="w-25 text-center h3" style="line-height: 80px;">
+        ${num}
+      </div>
+    </div>
+    `
+  }
+  target.innerHTML = html
+  return
+}
+
+function renderDetail(productName){
+  product = products[productName]
+  console.log(product)
+  let target = document.getElementById('products')
+  target.innerHTML = ''
+  let html =
+  `
+  <div class="bg-secondary w-100 h-auto text-white p-3">
+    <div class="d-flex mb-5">
+      <div class="col-7">
+        <h2 class="h1 mb-3" id="productName">${product.name}</h2>
+        <p class="h5 mb-2">Max Purchases: <span id="maxPurchases">${product.maxPurchases}</span></p>
+        <p class="h5 mb-2">price: ¥<span id="productPrice">${product.price}</span></p>
+  `
+  if(product.type == "ability"){
+    html +=
+    `
+    <p class="h6 mb-2">Get <span id="productValue">${product.value}</span> extra yen per click</p>
+    `
+  }else if(product.type == "invest"){
+    html +=
+    `
+    <p class="h6 mb-2">Get <span id="productValue">${(product.value * 100).toPrecision(1)}</span>% extra per sec</p>
+    `
+  }else{
+    html +=
+    `
+    <p class="h6 mb-2">Get <span id="productValue">${product.value}</span> extra yen per sec</p>
+    `
+  }
+
+  html +=
+  `
+      </div>
+      <div class="col-5">
+        <img src="${product.imageUrl}" alt="" class="w-100">
+      </div>
+    </div>
+    <form class="mb-5">
+      <div class="form-group">
+        <label for="purchaseNum">How Many would you like purchase?</label>
+        <input type="number" min="0" class="form-control" id="purchaseNum" value="1">
+      </div>
+      <p class="text-right">Total: ¥<span id="totalPrice">${product.price}</span></p>
+    </form>
+    <div class="d-flex mb-3">
+      <button class="btn btn-outline-primary col-6 mr-2" style="background-color: white;" onclick="renderProduct()">Go Back</button>
+      <button class="btn btn-primary col-6" id="puchaseBtn">Purchase</button>
+    </div>
+  </div>
+  `
+  target.innerHTML = html
+
+  let num = document.getElementById('purchaseNum')
+  document.getElementById('puchaseBtn').addEventListener('click', function(){
+    product.purchase(num.value)
+  })
+
+  num.addEventListener('change', function(){
+    let totalPrice = document.getElementById('totalPrice')
+    totalPrice.innerHTML = num.value * product.price
+  })
+}
